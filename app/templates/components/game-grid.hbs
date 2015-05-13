@@ -1,0 +1,11 @@
+<table>
+    <tbody>
+    {{#each row in gridCells}}
+      <tr>
+          {{#each cell in row}}
+            <td {{bind-attr class="cell.state"}}> </td>
+          {{/each}}
+      </tr>
+    {{/each}}
+    </tbody>
+</table>
