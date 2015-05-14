@@ -1,11 +1,42 @@
 #centered-form {
-  width: 80%;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid #000;
   border-radius: 5px;
 }
 
+#game-control{
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(95, 152, 34);
+  border-radius: 5px;
+}
+
+#game-title {
+  font-family: sans-serif;
+  font-size: 20px;
+  color: red;
+  text-align: center;
+  text-decoration: underline;
+}
+
+#game-description{
+  text-align: center;
+  font-style: italic;
+}
+
+#grid-table {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#grid-table td {
+  width:10px;
+  height:10px;
+  border:1px solid;
+}
 
 .empty-cell {
   background-color: white;
@@ -23,4 +54,32 @@
   background-color: black;
 }
 
+#new-game-btn {
+  text-align: center;
+  width: 100px;
+  padding: 3px 5px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: rgb(183, 141, 73);
+  border-radius: 5px;
+  transition: all .1s ease-in-out;
+  font-weight: bold;
+}
+
+#new-game-btn:hover {
+  background-color: rgb(168, 126, 68);
+  border-color: black;
+  box-shadow:0 0 2px #000000;
+  cursor: pointer;
+}
+
+#game-score {
+  float: left;
+  margin-left: 10px;
+}
+
+#game-highscore {
+  text-align: right;
+  margin-right: 10px;
+}
 

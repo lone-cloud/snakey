@@ -1,1 +1,5 @@
-{{game-grid}}
+<div class="game-container">
+  {{game-control newGameClick="newGame" score=score highScore=highScore}}
+
+  {{game-grid eatFrog="score" gameState=gameState}}
+</div>
