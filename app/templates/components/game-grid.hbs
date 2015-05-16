@@ -1,9 +1,9 @@
 <table id="grid-table">
     <tbody>
-    {{#each row in gridCells}}
+    {{#each row in grid}}
       <tr>
           {{#each cell in row}}
-            <td {{bind-attr class="cell.class"}}> </td>
+            <td {{bind-attr class="cell.cellClass"}}> </td>
           {{/each}}
       </tr>
     {{/each}}

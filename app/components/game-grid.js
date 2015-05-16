@@ -2,40 +2,49 @@ import Em from 'ember';
 import Cell from './game-grid/cell';
 import Snake from './game-grid/snake';
 
+// represents the game grid
 export default Em.Component.extend({
   actions: {
     eatFrog: function(){
       this.sendAction('eatFrog');
+      this.decrementProperty('currentFrogs', 1);
+      this.get('putFrogsInGrid').bind(this)();
     }
   },
 
+  // 'newGame', 'gameOn', 'gameFinished'
   gameState: null,
 
   onGameStateChange: function(){
     if(this.get('gameState') === 'newGame'){
+      var startX = 0, startY = 0;
+
       this.resetBoard();
       this.putFrogsInGrid();
-      this.get('gridCells')[0][0].state = 'snake-head';
-      this.get('snake').start();
+      this.get('snake').start(startX, startY);
       this.set('gameState', 'gameOn');
     }
   }.observes('gameState'),
 
-  // grid dimensions [x,y]
-  dimensions: [25, 25],
+  // grid dimensions [rows,columns]
+  dimensions: [20, 20],
 
   // AI object responsible for controlling the behaviour of the snake
   snake: null,
 
-  maxFrogs: 2,
+  maxFrogs: 3,
   currentFrogs: 0,
   // assumes that we have at least 2 places to put the frogs
   putFrogsInGrid: function(){
     var freeCells = this.get('freeCells'), freeCellKeys = Object.keys(freeCells),
-      randomFreeCellIndices = [], randomVal, gridCells = this.get('gridCells'),
+      randomFreeCellIndices = [], randomVal, grid = this.get('grid'),
       currentFrogs = this.get('currentFrogs'),
       frogsToAdd = this.get('maxFrogs') - currentFrogs,
       self = this;
+
+    if(freeCells.length === 0){
+      this.set('gameState', 'gameFinished');
+    }
 
     for(let i=0; i < frogsToAdd; i++){
       do {
@@ -46,33 +55,33 @@ export default Em.Component.extend({
     }
 
     randomFreeCellIndices.forEach(function(i){
-      var freeCellInd = freeCellKeys[i], x = freeCells[freeCellInd][0], y = freeCells[freeCellInd][1];
-      gridCells[x][y].state = 'frog';
-      self.set('currentFrogs', (currentFrogs+1));
-      delete freeCells[freeCellInd];
+      var freeCellInd = freeCellKeys[i];
+      grid[freeCells[freeCellInd][0]][freeCells[freeCellInd][1]].set('entity', 'frog');
+      self.incrementProperty('currentFrogs', 1);
     });
   },
 
-  gridCells: null,
-  freeCells: {},
+  grid: null,
+  freeCells: null,
 
   resetBoard: function(){
-    var gridCells = [], dimensions = this.get('dimensions'), freeCells = {};
+    var grid = Em.A(), dimensions = this.get('dimensions');
 
-    for(let i=0; i<dimensions[0]; i++){
+    this.set('freeCells', Em.Object.create());
+
+    for(let i=0; i < dimensions[0]; i++){
       var row = [];
 
-      for(let j=0; j<dimensions[1]; j++){
-        row.push(Cell.create());
-        freeCells[i + ',' + j] = [i,j];
+      for(let j=0; j < dimensions[1]; j++){
+        row.push(Cell.create({location: [i,j], parentController: this, entity: 'empty'}));
       }
 
-      gridCells.push(row);
+      grid.push(row);
     }
 
     this.setProperties({
-      'gridCells': gridCells,
-      'freeCells': freeCells
+      'grid': grid,
+      'currentFrogs': 0
     });
   },
 

@@ -1,5 +1,6 @@
 import Em from 'ember';
 
+// represents the controls display on the page
 export default Em.Component.extend({
 
   actions: {
