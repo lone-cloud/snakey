@@ -1,9 +1,14 @@
 <div id="game-control">
+    <div id="sound-control" {{action "toggleSound"}} {{bind-attr class="soundClass"}}></div>
     <p id="game-title">Snakey</p>
     <p id="game-description">Eat the frogs. Save the world.</p>
 
-    <div id="float-left">
-      <div id="new-game-btn"><span {{action "newGame"}}>New Game</span></div>
-      <div id="game-score">Score: {{score}}</div><div id="game-highscore">Highscore: {{highScore}}</div>
-    </div>
+    <div id="new-game-btn" {{action "newGame"}}>New Game</div>
+
+    <audio id="game-song" loop>
+        <source src="game-song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="game-score">Score: {{score}}</div>
+    <div id="game-highscore">Highscore: {{highScore}}</div>
 </div>

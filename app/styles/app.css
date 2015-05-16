@@ -12,6 +12,8 @@
   margin-right: auto;
   background-color: rgb(95, 152, 34);
   border-radius: 5px;
+  border: 1px solid;
+  margin-top: 10px;
 }
 
 #game-title {
@@ -20,6 +22,7 @@
   color: red;
   text-align: center;
   text-decoration: underline;
+  margin-top: 10px;
 }
 
 #game-description{
@@ -30,11 +33,13 @@
 #grid-table {
   margin-right: auto;
   margin-left: auto;
+  border-spacing: 0;
+  margin-bottom: 10px;
 }
 
 #grid-table td {
-  width:10px;
-  height:10px;
+  width:15px;
+  height:15px;
   border:1px solid;
 }
 
@@ -58,12 +63,13 @@
   text-align: center;
   width: 100px;
   padding: 3px 5px;
-  margin-right: auto;
-  margin-left: auto;
   background-color: rgb(183, 141, 73);
   border-radius: 5px;
   transition: all .1s ease-in-out;
   font-weight: bold;
+  border: 1px solid;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 #new-game-btn:hover {
@@ -73,13 +79,39 @@
   cursor: pointer;
 }
 
-#game-score {
+#sound-control {
+  width: 16px;
+  height: 16px;
   float: left;
   margin-left: 10px;
+  margin-top: 10px;
+}
+
+#sound-control {
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: absolute;
+}
+
+#sound-control:hover {
+  cursor: pointer;
 }
 
 #game-highscore {
   text-align: right;
   margin-right: 10px;
+  margin-bottom: 5px;
 }
 
+#game-score {
+  float: left;
+}
+.sound-off {
+  background: url('/images/sound-off.png') no-repeat center center;
+}
+
+.sound-on {
+  background: url('/images/sound-on.png') no-repeat center center;
+}
