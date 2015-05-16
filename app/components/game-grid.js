@@ -1,5 +1,6 @@
 import Em from 'ember';
 import Cell from './game-grid/cell';
+import Snake from './game-grid/snake';
 
 export default Em.Component.extend({
   actions: {
@@ -15,11 +16,16 @@ export default Em.Component.extend({
       this.resetBoard();
       this.putFrogsInGrid();
       this.get('gridCells')[0][0].state = 'snake-head';
+      this.get('snake').start();
+      this.set('gameState', 'gameOn');
     }
   }.observes('gameState'),
 
   // grid dimensions [x,y]
   dimensions: [25, 25],
+
+  // AI object responsible for controlling the behaviour of the snake
+  snake: null,
 
   maxFrogs: 2,
   currentFrogs: 0,
@@ -72,5 +78,6 @@ export default Em.Component.extend({
 
   didInsertElement: function(){
     this.resetBoard();
+    this.set('snake', Snake.create({parentController: this}));
   }
 });

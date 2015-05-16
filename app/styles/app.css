@@ -23,11 +23,13 @@
   text-align: center;
   text-decoration: underline;
   margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 #game-description{
   text-align: center;
   font-style: italic;
+  margin-top: 5px;
 }
 
 #grid-table {
