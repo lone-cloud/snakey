@@ -70,62 +70,62 @@ body {
 }
 
 .frog-cell {
-  background: url('/images/frog.png') no-repeat center center;
+  background: url('images/frog.png') no-repeat center center;
 }
 
 .snake-head-down-cell {
-  background: url('/images/snake-head.png') no-repeat center center;
+  background: url('images/snake-head.png') no-repeat center center;
 }
 
 .snake-head-up-cell {
-  background: url('/images/snake-head.png') no-repeat center center;
+  background: url('images/snake-head.png') no-repeat center center;
   transform: rotate(180deg);
 }
 
 .snake-head-left-cell {
-  background: url('/images/snake-head.png') no-repeat center center;
+  background: url('images/snake-head.png') no-repeat center center;
   transform: rotate(90deg);
 }
 
 .snake-head-right-cell {
-  background: url('/images/snake-head.png') no-repeat center center;
+  background: url('images/snake-head.png') no-repeat center center;
   transform: rotate(270deg);
 }
 
 .snake-body-down-cell {
-  background: url('/images/snake-body.png') no-repeat center center;
+  background: url('images/snake-body.png') no-repeat center center;
 }
 
 .snake-body-up-cell {
-  background: url('/images/snake-body.png') no-repeat center center;
+  background: url('images/snake-body.png') no-repeat center center;
 }
 
 .snake-body-left-cell {
-  background: url('/images/snake-body.png') no-repeat center center;
+  background: url('images/snake-body.png') no-repeat center center;
   transform: rotate(90deg);
 }
 
 .snake-body-right-cell {
-  background: url('/images/snake-body.png') no-repeat center center;
+  background: url('images/snake-body.png') no-repeat center center;
   transform: rotate(90deg);
 }
 
 .snake-tail-down-cell {
-  background: url('/images/snake-tail.png') no-repeat center center;
+  background: url('images/snake-tail.png') no-repeat center center;
 }
 
 .snake-tail-up-cell {
-  background: url('/images/snake-tail.png') no-repeat center center;
+  background: url('images/snake-tail.png') no-repeat center center;
   transform: rotate(180deg);
 }
 
 .snake-tail-left-cell {
-  background: url('/images/snake-tail.png') no-repeat center center;
+  background: url('images/snake-tail.png') no-repeat center center;
   transform: rotate(90deg);
 }
 
 .snake-tail-right-cell {
-  background: url('/images/snake-tail.png') no-repeat center center;
+  background: url('images/snake-tail.png') no-repeat center center;
   transform: rotate(270deg);
 }
 
@@ -181,9 +181,9 @@ body {
   margin-bottom: 5px;
 }
 .sound-off {
-  background: url('/images/sound-off.png') no-repeat center center;
+  background: url('images/sound-off.png') no-repeat center center;
 }
 
 .sound-on {
-  background: url('/images/sound-on.png') no-repeat center center;
+  background: url('images/sound-on.png') no-repeat center center;
 }
