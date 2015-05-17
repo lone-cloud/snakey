@@ -90,6 +90,27 @@ export default Em.Object.extend({
   init: function(){
     var self = this, isSafeNewDirection = this.get('isSafeNewDirection').bind(this);
 
+    Em.$('body').on('swipeup', function(){
+      if(isSafeNewDirection([-1,0])){
+        self.set('direction', [-1,0, '-up']);
+      }
+    });
+    Em.$('body').on('swipedown', function(){
+      if(isSafeNewDirection([1,0])){
+        self.set('direction', [1,0, '-down']);
+      }
+    });
+    Em.$('body').on('swipeleft', function(){
+      if(isSafeNewDirection([0,-1])){
+        self.set('direction', [0,-1, '-left']);
+      }
+    });
+    Em.$('body').on('swiperight', function(){
+      if(isSafeNewDirection([0,1])){
+        self.set('direction', [0,1, '-right']);
+      }
+    });
+
     Em.$(document).keydown(function(event) {
       var key = event.which;
 

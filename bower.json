@@ -11,6 +11,10 @@
     "ember-resolver": "~0.1.15",
     "jquery": "^1.11.1",
     "loader.js": "ember-cli/loader.js#3.2.0",
-    "qunit": "~1.17.1"
+    "qunit": "~1.17.1",
+    "jquery-mobile": "~1.4.5"
+  },
+  "resolutions": {
+    "jquery": ">= 1.7.0 < 2.2.0"
   }
 }
