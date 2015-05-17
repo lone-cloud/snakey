@@ -6,7 +6,7 @@ export default Em.Object.extend({
   parentController: null,
   location: null,
 
-  // name of the entity residing in the cell: 'empty', 'snake-head', 'snake-body' or 'frog'
+  // name of the entity residing in the cell: 'empty', 'snake-head', 'snake-body', 'snake-tail' or 'frog'
   entity: null,
 
   // update the game-grid's freecells when the cell's entity changes

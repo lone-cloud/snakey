@@ -1,5 +1,11 @@
 <div id="game-control">
     <div id="sound-control" {{action "toggleSound"}} {{bind-attr class="soundClass"}}></div>
+    <div id="game-options">
+      {{input type="checkbox" class="checkBox"}} ∞ scrolling
+        <br/>
+      {{input type="checkbox" class="speedUp"}} speed up
+    </div>
+
     <p id="game-title">Snakey</p>
     <p id="game-description">Eat the frogs. Save the world.</p>
 

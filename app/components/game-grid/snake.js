@@ -14,7 +14,7 @@ export default Em.Object.extend({
 
   // specifies the base speed at which the snake will move
   // the effective heartbeat will be scaled based on the size of the board
-  baseHeartBeat: 75000,
+  baseHeartBeat: 40000,
   timer: null,
 
   start: function(startRow, startCol){
@@ -24,12 +24,11 @@ export default Em.Object.extend({
     this.setProperties({
       'headPosition': [startRow, startCol],
       'body' : [],
-      'direction' : [0, 1]
+      'direction' : [0, 1, '-right']
     });
 
-    this.get('parentController.grid')[startRow][startCol].set('entity', 'snake-head');
+    this.get('parentController.grid')[startRow][startCol].set('entity', 'snake-head' + this.get('direction')[2]);
 
-    // TODO: is this necessary?
     if(timer !== null){
       clearInterval(timer);
     }
@@ -48,23 +47,39 @@ export default Em.Object.extend({
       var newHeadPosRow = headPosition[0] + direction[0], newHeadPosColumn = headPosition[1] + direction[1];
 
       var isWithinBounds = newHeadPosRow >= 0 && newHeadPosColumn >= 0 && newHeadPosRow < parentController.get('dimensions')[0] && newHeadPosColumn < parentController.get('dimensions')[1];
-      var selfCollision = false;
+      var isNotSelfCollided = body.every(function(bodyPart) {
+        return !(bodyPart[0] === newHeadPosRow && bodyPart[1] === newHeadPosColumn);
+      });
 
       // game is over since the user went out of bounds or hit its own body
-      if(!isWithinBounds || selfCollision){
+      if(!isWithinBounds || !isNotSelfCollided) {
         parentController.set('gameState', 'gameFinished');
       } else { // figure out the movement
-        var oldHeadPos = parentController.get('grid')[headPosition[0]][headPosition[1]],
-          newHeadPost = parentController.get('grid')[newHeadPosRow][newHeadPosColumn];
+        var grid = parentController.get('grid'), oldHeadPos = grid[headPosition[0]][headPosition[1]],
+          newHeadPost = grid[newHeadPosRow][newHeadPosColumn];
 
         // check if we ate a frog
         if(newHeadPost.get('entity') === 'frog'){
           parentController.send('eatFrog');
           body.push([headPosition[0], headPosition[1]]);
+          grid[headPosition[0]][headPosition[1]].set('entity', 'snake-body' + direction[2]);
+        } else {
+          var bodyTail = body.shift();
+          if(bodyTail !== undefined){
+            grid[bodyTail[0]][bodyTail[1]].set('entity', 'empty');
+            grid[headPosition[0]][headPosition[1]].set('entity', 'snake-body' + direction[2]);
+            body.push([headPosition[0], headPosition[1]]);
+          } else {
+            oldHeadPos.set('entity', 'empty');
+          }
         }
 
-        oldHeadPos.set('entity', 'empty');
-        newHeadPost.set('entity', 'snake-head');
+        if(body.length > 0){
+          var tailEntity = grid[body[0][0]][body[0][1]].entity.replace('snake-body', 'snake-tail');
+          grid[body[0][0]][body[0][1]].set('entity', tailEntity);
+        }
+
+        newHeadPost.set('entity', 'snake-head' + direction[2]);
         this.set('headPosition', [newHeadPosRow, newHeadPosColumn]);
       }
     } else {
@@ -73,20 +88,33 @@ export default Em.Object.extend({
   },
 
   init: function(){
-    var self = this;
+    var self = this, isSafeNewDirection = this.get('isSafeNewDirection').bind(this);
 
     Em.$(document).keydown(function(event) {
       var key = event.which;
 
-      if(key === 38 || key === 87){ // up
-        self.set('direction', [-1,0]);
-      } else if(key === 40 || key === 83){ // down
-        self.set('direction', [1,0]);
-      } else if(key === 37 || key === 65){ // left
-        self.set('direction', [0,-1]);
-      } else if(key === 39 || key === 68){ // right
-        self.set('direction', [0,1]);
+      if((key === 38 || key === 87) && isSafeNewDirection([-1,0])){ // up
+        self.set('direction', [-1,0, '-up']);
+      } else if((key === 40 || key === 83) && isSafeNewDirection([1,0])){ // down
+        self.set('direction', [1,0, '-down']);
+      } else if((key === 37 || key === 65) && isSafeNewDirection([0,-1])){ // left
+        self.set('direction', [0,-1, '-left']);
+      } else if((key === 39 || key === 68) && isSafeNewDirection([0,1])){ // right
+        self.set('direction', [0,1, '-right']);
       }
     });
+  },
+
+  // noob friendly check to prevent accidental suicides
+  isSafeNewDirection: function(newDirection){
+    if(this.get('body').length > 0){
+      var direction = this.get('direction');
+
+      if(direction[0] + newDirection[0] === 0 && direction[1] + newDirection[1] === 0){
+        return false;
+      }
+    }
+
+    return true;
   }
 });
