@@ -12,13 +12,23 @@ export default Em.Object.extend({
   headPosition: null,
   body: null,
 
-  // specifies the base speed at which the snake will move
-  // the effective heartbeat will be scaled based on the size of the board
-  baseHeartBeat: 40000,
+  // a representation of how fast the snake moves
+  defaultHeartBeat: 140,
+  heartBeat: 140,
+  minHeartBeat: 70,
+
+  heartBeatDecrementBy: 5,
+
   timer: null,
 
   start: function(startRow, startCol){
-    var doMove = this.get('doMove'), baseHeartBeat = this.get('baseHeartBeat'), timer = this.get('timer'), self = this, dimensions = this.get('parentController.dimensions'), heartBeat = baseHeartBeat/(dimensions[0]*dimensions[1]);
+    var heartBeat = this.get('defaultHeartBeat'), timer = this.get('timer'), self = this;
+
+    // slow down the initial heartBeat if we're in speed up mode
+    if(this.get('parentController.speedUp')){
+      heartBeat *= 1.5;
+    }
+    this.set('heartBeat', heartBeat);
 
     // set the start game defaults
     this.setProperties({
@@ -34,12 +44,12 @@ export default Em.Object.extend({
     }
 
     this.set('timer', setInterval(function () {
-      doMove.bind(self)();
+      self.get('doMove').bind(self)();
       }, heartBeat));
   },
 
   doMove: function(){
-    var parentController = this.get('parentController');
+    var parentController = this.get('parentController'), self = this;
 
     // keep moving while the game is on
     if(parentController.get('gameState') === 'gameOn'){
@@ -63,6 +73,16 @@ export default Em.Object.extend({
           parentController.send('eatFrog');
           body.push([headPosition[0], headPosition[1]]);
           grid[headPosition[0]][headPosition[1]].set('entity', 'snake-body' + direction[2]);
+
+          //handle the speed up on the eating of a frog
+          if(parentController.get('speedUp') && this.get('heartBeat') > this.get('minHeartBeat')){
+            this.decrementProperty('heartBeat', this.get('heartBeatDecrementBy'));
+
+            clearInterval(this.get('timer'));
+            this.set('timer', setInterval(function () {
+              self.get('doMove').bind(self)();
+            }, this.get('heartBeat')));
+          }
         } else {
           var bodyTail = body.shift();
           if(bodyTail !== undefined){

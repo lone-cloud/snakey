@@ -43,6 +43,10 @@ export default Em.Component.extend({
 
   soundOff: true,
 
+  speedUp: false,
+
+  infScrolling: false,
+
   soundClass: function(){
     if(this.get('soundOff')){
       return 'sound-off';

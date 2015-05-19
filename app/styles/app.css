@@ -1,7 +1,3 @@
-body {
-  background-color: yellowgreen;
-}
-
 #centered-form {
   max-width: 800px;
   margin-left: auto;
@@ -17,13 +13,14 @@ body {
 }
 
 #game-options {
-  display: none;
   font-size: medium;
   text-align: left;
-  width: 200px;
+  position: absolute;
+  right: 0;
 }
 
 #game-control{
+  position: relative;
   margin-left: auto;
   margin-right: auto;
   background-color: rgb(95, 152, 34);
@@ -46,6 +43,7 @@ body {
   text-align: center;
   font-style: italic;
   margin-top: 5px;
+  margin-bottom: 20px;
 }
 
 #grid-table {
