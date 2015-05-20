@@ -8,6 +8,7 @@ export default Em.Object.extend({
 
   // direction of the snake representing movement on [row,column]
   direction: null,
+  lastMoveDirection: null,
 
   headPosition: null,
   body: null,
@@ -34,7 +35,8 @@ export default Em.Object.extend({
     this.setProperties({
       'headPosition': [startRow, startCol],
       'body' : [],
-      'direction' : [0, 1, '-right']
+      'direction' : [0, 1, '-right'],
+      'lastMoveDirection' : [0, 0]
     });
 
     this.get('parentController.grid')[startRow][startCol].set('entity', 'snake-head' + this.get('direction')[2]);
@@ -49,14 +51,27 @@ export default Em.Object.extend({
   },
 
   doMove: function(){
-    var parentController = this.get('parentController'), self = this;
+    var parentController = this.get('parentController'), self = this, direction = this.get('direction');
 
     // keep moving while the game is on
     if(parentController.get('gameState') === 'gameOn'){
-      var direction = this.get('direction'), headPosition = this.get('headPosition'), body = this.get('body');
-      var newHeadPosRow = headPosition[0] + direction[0], newHeadPosColumn = headPosition[1] + direction[1];
+      var headPosition = this.get('headPosition'), body = this.get('body'), maxRows = parentController.get('dimensions')[0], maxColumns = parentController.get('dimensions')[1];
+      var newHeadPosRow = headPosition[0] + direction[0], newHeadPosColumn = headPosition[1] + direction[1], isWithinBounds = true;
 
-      var isWithinBounds = newHeadPosRow >= 0 && newHeadPosColumn >= 0 && newHeadPosRow < parentController.get('dimensions')[0] && newHeadPosColumn < parentController.get('dimensions')[1];
+      if(parentController.get('infScrolling')){
+        newHeadPosRow %= maxRows;
+        newHeadPosColumn %= maxColumns;
+
+        if(newHeadPosRow === -1){
+          newHeadPosRow = maxRows - 1;
+        }
+        if(newHeadPosColumn === -1){
+          newHeadPosColumn = maxColumns - 1;
+        }
+      } else {
+        isWithinBounds = newHeadPosRow >= 0 && newHeadPosColumn >= 0 && newHeadPosRow < maxRows && newHeadPosColumn < maxColumns;
+      }
+
       var isNotSelfCollided = body.every(function(bodyPart) {
         return !(bodyPart[0] === newHeadPosRow && bodyPart[1] === newHeadPosColumn);
       });
@@ -101,6 +116,7 @@ export default Em.Object.extend({
 
         newHeadPost.set('entity', 'snake-head' + direction[2]);
         this.set('headPosition', [newHeadPosRow, newHeadPosColumn]);
+        this.set('lastMoveDirection', [direction[0], direction[1]]);
       }
     } else {
       clearInterval(this.get('timer'));
@@ -109,27 +125,6 @@ export default Em.Object.extend({
 
   init: function(){
     var self = this, isSafeNewDirection = this.get('isSafeNewDirection').bind(this);
-
-    Em.$('body').on('swipeup', function(){
-      if(isSafeNewDirection([-1,0])){
-        self.set('direction', [-1,0, '-up']);
-      }
-    });
-    Em.$('body').on('swipedown', function(){
-      if(isSafeNewDirection([1,0])){
-        self.set('direction', [1,0, '-down']);
-      }
-    });
-    Em.$('body').on('swipeleft', function(){
-      if(isSafeNewDirection([0,-1])){
-        self.set('direction', [0,-1, '-left']);
-      }
-    });
-    Em.$('body').on('swiperight', function(){
-      if(isSafeNewDirection([0,1])){
-        self.set('direction', [0,1, '-right']);
-      }
-    });
 
     Em.$(document).keydown(function(event) {
       var key = event.which;
@@ -149,7 +144,7 @@ export default Em.Object.extend({
   // noob friendly check to prevent accidental suicides
   isSafeNewDirection: function(newDirection){
     if(this.get('body').length > 0){
-      var direction = this.get('direction');
+      var direction = this.get('lastMoveDirection');
 
       if(direction[0] + newDirection[0] === 0 && direction[1] + newDirection[1] === 0){
         return false;

@@ -23,6 +23,11 @@ export default Em.Component.extend({
       this.putFrogsInGrid();
       this.get('snake').start(startX, startY);
       this.set('gameState', 'gameOn');
+    } else if(this.get('gameState') === 'gameFinished'){
+      // explosion fx
+      var style = 'z-index: 99999; position: absolute; top: -100px; right: -100px; height: 200px; width: 200px;';
+      Em.$('td[class^="snake-head"]').append('<div class="explosion" style="' + style + '"><img src="assets/images/explosion.gif?_='+Math.random()+'" /></div>');
+      Em.run.later(function(){Em.$('.explosion').remove();}, 3000);
     }
   }.observes('gameState'),
 

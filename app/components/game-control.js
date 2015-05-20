@@ -27,13 +27,16 @@ export default Em.Component.extend({
 
   didInsertElement: function() {
     if(typeof(Storage) !== "undefined") {
-      var soundOff = JSON.parse(localStorage.getItem('snakey.soundOff'));
+      var soundOff = JSON.parse(localStorage.getItem('snakey.soundOff')) || true;
 
       // JSON.parse because localStorage only stores as String...weird
-      if(!soundOff){
-        this.set('soundOff', soundOff);
+      if(soundOff){
+        Em.$('#game-song').trigger('pause');
+      } else {
         Em.$('#game-song').trigger('play');
       }
+
+      this.set('soundOff', soundOff);
     }
   },
 
