@@ -73,21 +73,25 @@
 
 .snake-head-down-cell {
   background: url('images/snake-head.png') no-repeat center center;
+  position: relative;
 }
 
 .snake-head-up-cell {
   background: url('images/snake-head.png') no-repeat center center;
   transform: rotate(180deg);
+  position: relative;
 }
 
 .snake-head-left-cell {
   background: url('images/snake-head.png') no-repeat center center;
   transform: rotate(90deg);
+  position: relative;
 }
 
 .snake-head-right-cell {
   background: url('images/snake-head.png') no-repeat center center;
   transform: rotate(270deg);
+  position: relative;
 }
 
 .snake-body-down-cell {
